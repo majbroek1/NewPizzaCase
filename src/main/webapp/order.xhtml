@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:form id="catalogForm">
+        <h:link outcome="index" value="Back to Homepage"/>
+        <h1>Our Products!</h1>
+
+        <h:dataTable value="#{catalogController.productList}" var="prod" border="1">
+            <h:column>
+                <f:facet name="header">Product</f:facet>
+                #{prod.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                #{prod.price}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Add/Remove</f:facet>
+                <p:commandButton value="+" actionListener="#{foodOrderController.addOrderItem(prod)}"
+                                 update=":catalogForm:placedOrder"/>
+                <p:commandButton value="-" actionListener="#{foodOrderController.removeOrderItem(prod)}"
+                                 update=":catalogForm:placedOrder"/>
+            </h:column>
+        </h:dataTable>
+
+        <p></p>
+        <p></p>
+
+        <h:panelGroup id="placedOrder">
+            <h1>Placed Order</h1>
+
+            <h:dataTable value="#{foodOrderController.foodOrder.orderItems}" var="o" border="1">
+                <h:column>
+                    <f:facet name="header">Product</f:facet>
+                    #{o.product.name}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Price</f:facet>
+                    #{o.product.price}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Quantity</f:facet>
+                    #{o.quantity}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Subtotal</f:facet>
+                    #{o.subTotal}
+                </h:column>
+            </h:dataTable>
+
+            <h2>Totaalprijs is:</h2>
+            #{foodOrderController.calculateTotalPrice()}
+
+        </h:panelGroup>
+    </h:form>
+</f:view>
+</html>
